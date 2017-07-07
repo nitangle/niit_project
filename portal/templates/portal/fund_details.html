@@ -1,0 +1,6 @@
+{% extends 'portal/base.html' %}
+{% block content %}
+{% for donor in donors %}
+{{ donor }} donated {{ donor.amount }} on {{ donor.donation_date }}
+{% endfor %}
+{% endblock %}

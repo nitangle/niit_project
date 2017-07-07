@@ -1,0 +1,36 @@
+{% extends 'portal/base.html' %}
+<!--<div class="modal fade" id="signup" role="dialog">-->
+<!--<div class="modal-dialog">-->
+
+<!--&lt;!&ndash; Modal content&ndash;&gt;-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<button id="auth_button" type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--<h4 class="modal-title">Sign Up</h4>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--{{ signupform }}-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->
+
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="row">
+    <div class="col-sm-4"> </div>
+        <div class="col-sm-4">
+            <form enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+                <input type="submit">
+            </form>
+
+    </div>
+</div>
+{% endblock %}

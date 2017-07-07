@@ -1,44 +1,48 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
+
+
+class UserProfile(User):
+
+    institute_name = models.CharField(max_length=80, blank=True)
+    occupation = models.CharField(max_length=30, blank=True)
+    company_name = models.CharField(max_length=40, blank=True)
+    aadhar_card_no = models.CharField(max_length=40, blank=True)
+    aadhar_card_pic = models.ImageField(upload_to='portal/aadhar_cards', blank=True)
+    pan_card_no = models.CharField(max_length=20, blank=True)
+    pan_card_pic = models.ImageField(upload_to='portal/pan_cards', blank=True)
+    email_confirmed = models.BooleanField(default=False)
 
 
 class Recipient(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(widget=models.EmailField)
-    institute_name = models.CharField(max_length=80)
-    amount_required = models.FloatField()
-    amount_received = models.FloatField()
-    date_of_reception = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    amount_required = models.FloatField(MinValueValidator(5000))
+    # amount_received = models.FloatField()
+    reason = models.TextField(default=None)
+    date_of_reception = models.DateTimeField()
 
     def __str__(self):
-        return self.first_name
-
-    def get_recipients(self, n=6):
-        recent_recipients = Recipient.objects.order_by('-transaction_date')[:n]
-        return recent_recipients
-
+        return self.user.first_name
 
 
 class Donor(models.Model):
-    first_name = models.CharField(max_field=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(widget=models.EmailField)
-    occupation = models.CharField(max_length=30, blank=True)
-    company_name = models.CharField(max_length=40, default=None)
-    amount_donated = models.FloatField()
-    donation_date = models.DateTimeField(auto_now_add = True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    amount_donated = models.FloatField(MinValueValidator(1))
+    donation_date = models.DateTimeField(auto_now_add=True)
+    remarks = models.TextField(default=None)
 
     def __str__(self):
-        return "{} donated {}".format(self.first_name, self.amount_donated)
-
-    def get_top_donors(self, n=5):
-        top_donors = Donor.objects.order_by('-donation_date')[:n]
-        return top_donors
+        return self.user.first_name
 
 
-class Ngos(models.Model):
-    name = models.CharField(max_length=60)
-    total_funds = models.FloatField()
+class Ngo(models.Model):
+    name = models.CharField(max_length=60, default='PHLOXIT')
+    total_funds = models.FloatField(MinValueValidator(1))
 
+
+class PeopleHelped(models.Model):
+    person = models.ForeignKey(Recipient, on_delete=models.CASCADE)
+    amount_received = models.FloatField(MinValueValidator(1))

@@ -1,1 +1,40 @@
 {% extends "portal/base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="panel-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Funds raised so far</div>
+            <div class="panel-body">Currently we have a total fund of <a href="{% url 'portal:fund_details' %}">{{ total_funds }}</a>.</div>
+    </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="jumbotron">
+
+        <ul>
+            {% for donor in top_donors %}
+            <li style="list-style-type:none">{{ donor }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="jumbotron">
+
+        {% for recipient in recent_recipients %}
+        <ul>
+            <li style="list-style-type:none">{{ recipient }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+</div>
+
+{% endblock %}

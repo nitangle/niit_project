@@ -1,0 +1,12 @@
+{% extends 'portal/base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="row">
+    <div class="col-sm-4">
+        <div class="col-sm-4">
+            {% csrf_token %}
+            {% crispy donor_form %}
+        </div>
+    </div>
+</div>
+{% endblock %}

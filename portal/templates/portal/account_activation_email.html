@@ -1,0 +1,8 @@
+
+
+Hi {{ user.username }},
+
+Please click on the link below to confirm your registration:
+<form method="POST"><input type="hidden" name="pass" value={{user}}></form>
+<a href="http://{{ domain }}{% url 'portal:activate' uidb64=uid token=token %}">click here</a>
+
